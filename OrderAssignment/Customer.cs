@@ -71,7 +71,7 @@ namespace OrderAssignment
                             sqlDataAdapter = new SqlDataAdapter(sql, _connection);
                             sqlDataAdapter.Fill(getDataItem);
                             Console.WriteLine("Customer Add Successfully ");
-                           // emailsend(Email,FirstName,LastName);
+                            emailsend(Email,FirstName,LastName);
                             Console.WriteLine();
                             Console.WriteLine("Do you want to Add More Customers \n             press :1");
                             int check = Convert.ToInt32(Console.ReadLine());
@@ -280,34 +280,25 @@ namespace OrderAssignment
         public void emailsend(string to,string firstname,string lastname)
         {
             string from = "sinhgsanjay790043@gmail.com";
-            long password = 7900434644;
+            string password = "wgmjdfbehcczelcy";
             string subject = "Welcome  Dear Customre";
             string body = "<h1>Dear, "+firstname+" "+LastName+ "</h1>\nThanks for registering with us";
             try
             {
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(from),
-                    Subject = subject,
-                    Body = body
-                };
-                mail.To.Add(new MailAddress(to));
-                mail.IsBodyHtml = true;
-
-
-
-                SmtpClient smpt = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    // smpt.Timeout = 10000;
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = true,
-                    EnableSsl = true,
-
-                    Credentials = new NetworkCredential(from, password.ToString())
-                };
-                smpt.Send(mail);
+                MailMessage message = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                message.From = new MailAddress(from);
+                message.To.Add(new MailAddress(to));
+                message.Subject = subject;
+                message.IsBodyHtml = true; //to make message body as html  
+                message.Body =body;
+                smtp.Port = 587;
+                smtp.Host = "smtp.gmail.com"; //for gmail host  
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential(from, password);
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(message);
 
 
 
